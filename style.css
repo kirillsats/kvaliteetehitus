@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background: #121212;
+    color: #f0f0f0;
+}
+
+header {
+    background: #1c1c1c;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+nav a {
+    color: #f0f0f0;
+    margin: 0 15px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+    nav a:hover {
+        color: #ffcc00;
+    }
+
+section {
+    display: none;
+    padding: 40px;
+    text-align: center;
+}
+
+    section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        section ul li {
+            margin: 10px 0;
+            font-size: 18px;
+            background: #1e1e1e;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+footer {
+    background: #1c1c1c;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+.lang {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+button {
+    background: transparent;
+    border: 1px solid #555;
+    color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    button:hover {
+        background: #ffcc00;
+        color: #121212;
+    }
+
+/* ✅ Логотип слева */
+.logo {
+    position: absolute;
+    left: 20px;
+    top: 15px;
+}
+
+    .logo img {
+        height: 50px;
+        width: auto;
+        border-radius: 8px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .logo a:hover img {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+/* ✅ Контакты */
+.contacts a {
+    color: #ffcc00;
+    text-decoration: none;
+}
+
+    .contacts a:hover {
+        text-decoration: underline;
+    }
+
+.contacts p {
+    margin: 6px 0;
+}

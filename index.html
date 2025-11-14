@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KvaliteetEhitus OÜ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <!-- ✅ Логотип компании (слева вверху, кликабельный) -->
+        <div class="logo">
+            <a href="#home" onclick="showSection('home')">
+                <img src="logo.jpg" alt="KvaliteetEhitus OÜ">
+            </a>
+        </div>
+
+        <h1 id="title">KvaliteetEhitus OÜ</h1>
+
+        <nav>
+            <a href="#home" id="nav-home" onclick="showSection('home')">Главная</a>
+            <a href="#services" id="nav-services" onclick="showSection('services')">Услуги</a>
+            <a href="#about" id="nav-about" onclick="showSection('about')">О компании</a>
+            <a href="#contacts" id="nav-contacts" onclick="showSection('contacts')">Контакты</a>
+        </nav>
+
+        <div class="lang">
+            <button onclick="setLang('ru')">RU</button> |
+            <button onclick="setLang('et')">ET</button>
+        </div>
+    </header>
+
+    <!-- Главная -->
+    <section id="home">
+        <h2 id="welcome-title">Добро пожаловать!</h2>
+        <p id="welcome-text">Мы строим дома, ремонтируем квартиры и создаём комфорт для вас.</p>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services">
+        <h2 id="services-title">Наши услуги</h2>
+        <ul id="services-list"></ul>
+
+        <!-- ✅ Добавленный блок с видами ремонта -->
+        <div class="repair-types">
+            <p><strong>Ремонт:</strong></p>
+            <ul>
+                <li>Косметический — 130€</li>
+                <li>Капитальный — 270€</li>
+                <li>Дизайнерский — 450€</li>
+            </ul>
+        </div>
+    </section>
+
+
+    <!-- О компании -->
+    <section id="about">
+        <h2 id="about-title">О компании</h2>
+        <p id="about-text"></p>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contacts">
+        <h2 id="contacts-title">Контакты</h2>
+        <div class="contacts">
+            <p><strong id="email-label">📧 Почта:</strong></p>
+            <p><a href="mailto:kvaliteetehitus@mail.ru">kvaliteetehitus@mail.ru</a></p>
+            <p><a href="mailto:jurasol1985@gmail.com">jurasol1985@gmail.com</a></p>
+            <p><strong id="phone-label">📞 Номер телефона:</strong></p>
+            <p><a href="tel:+37253850085">53850085 — Юрий / Jurii</a></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 KvaliteetEhitus OÜ</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
