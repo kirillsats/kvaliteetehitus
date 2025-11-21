@@ -1,103 +1,200 @@
-const translations = {
-    ru: {
-        navHome: "Главная",
-        navServices: "Услуги",
-        navAbout: "О компании",
-        navContacts: "Контакты",
-        welcomeTitle: "Добро пожаловать!",
-        welcomeText: "Мы строим дома, ремонтируем квартиры и создаём комфорт для вас.",
-        servicesTitle: "Наши услуги",
-        servicesList: [
-            "Реконструкция",
-            "Постройка домов с нуля",
-            "Демонтаж",
-            "Ремонт"
-        ],
-        repairTitle: "Ремонт:",
-        repairList: [
-            "Косметический — 130",
-            "Капитальный — 270",
-            "Дизайнерский — 450"
-        ],
-        aboutTitle: "О компании",
-        aboutText: "KvaliteetEhitus OÜ — это команда профессионалов с более чем 10-летним опытом в строительстве и ремонте. Мы воплощаем идеи в реальность: от уютных квартир до масштабных проектов. Наш приоритет — качество, надежность и соблюдение сроков. Мы верим, что ваш дом — это ваша крепость, и создаём его с вниманием к каждой детали.",
-        contactsTitle: "Контакты",
-        emailLabel: "📧 Почта:",
-        phoneLabel: "📞 Номер телефона:"
-    },
-    et: {
-        navHome: "Avaleht",
-        navServices: "Teenused",
-        navAbout: "Meist",
-        navContacts: "Kontaktid",
-        welcomeTitle: "Tere tulemast!",
-        welcomeText: "Me ehitame maju, remondime kortereid ja loome teile mugavust.",
-        servicesTitle: "Meie teenused",
-        servicesList: [
-            "Rekonstrueerimine",
-            "Majade ehitamine nullist",
-            "Lammutustööd",
-            "Remont"
-        ],
-        repairTitle: "Remont:",
-        repairList: [
-            "Kosmeetiline — 130",
-            "Kapitaalne — 270",
-            "Disain — 450"
-        ],
-        aboutTitle: "Meist",
-        aboutText: "KvaliteetEhitus OÜ on professionaalne meeskond, kellel on üle 10 aasta kogemust ehituse ja remondi vallas. Me viime ellu teie ideed — alates hubastest korteritest kuni suurte projektideni. Meie prioriteedid on kvaliteet, usaldusväärsus ja tähtaegadest kinnipidamine. Usume, et teie kodu on teie kindlus ning loome selle hoolikalt iga detaili osas.",
-        contactsTitle: "Meie kontaktid",
-        emailLabel: "📧 Email:",
-        phoneLabel: "📞 Telefoninumber:"
+import "./styles.css";
+
+let givenProfile = "";
+let profileName = "";
+let profileID = "";
+let profileLink = "";
+let profileRepos = "";
+
+/* Хранит ID интервалов для колонок, чтобы можно было очищать при перерендере */
+let galleryIntervals = [];
+
+/* --- Рендер страницы (включая блок профиля и галерею) --- */
+function renderPage() {
+  document.getElementById("app").innerHTML = `
+    <div class="container">
+
+      <header class="header">
+        <h1 class="site-title">Строительная компания — Главная</h1>
+        <div class="profile-box">
+          <p>Поиск GitHub аккаунта:</p>
+          <input id="github-input" placeholder="Введите GitHub имя" value="${givenProfile}" />
+          <div class="content">
+            <h2 id="nimi">Nimi: ${profileName ? profileName : "-"}</h2>
+            <p id="profileid">ID: ${profileID ? profileID : "-"}</p>
+            <p id="profilerepos">Repos: ${profileRepos ? profileRepos : "-"}</p>
+            <p id="profileurl">Link: ${
+              profileLink && profileName
+                ? `<a href="${profileLink}" target="_blank">${profileLink}</a>`
+                : "-"
+            }</p>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="intro">
+          <h2>Наши работы — До и После</h2>
+          <p>Ниже — автоматические колонны с фотографиями проектов. Класть файлы в папку <code>img/</code>.</p>
+        </section>
+
+        <!-- ТРИ КОЛОНКИ ГАЛЕРЕИ -->
+        <section class="triple-gallery">
+          <div class="gallery-column" data-speed="5000">
+            <!-- вставь свои фото сюда или в HTML ниже -->
+            <img src="img/1.jpg" alt="">
+            <img src="img/2.jpg" alt="">
+            <img src="img/3.jpg" alt="">
+            <img src="img/4.jpg" alt="">
+            <img src="img/5.jpg" alt="">
+            <img src="img/6.jpg" alt="">
+          </div>
+
+          <div class="gallery-column" data-speed="4200">
+            <img src="img/7.jpg" alt="">
+            <img src="img/8.jpg" alt="">
+            <img src="img/9.jpg" alt="">
+            <img src="img/10.jpg" alt="">
+            <img src="img/11.jpg" alt="">
+            <img src="img/12.jpg" alt="">
+          </div>
+
+          <div class="gallery-column" data-speed="3500">
+            <img src="img/13.jpg" alt="">
+            <img src="img/14.jpg" alt="">
+            <img src="img/15.jpg" alt="">
+            <img src="img/16.jpg" alt="">
+            <img src="img/17.jpg" alt="">
+            <img src="img/18.jpg" alt="">
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>© ${new Date().getFullYear()} Строительная компания</p>
+      </footer>
+    </div>
+  `;
+
+  // Повесим слушатель на input (не спрашиваем — просто делаем)
+  const input = document.getElementById("github-input");
+  if (input) {
+    input.addEventListener("change", updateValue);
+  }
+
+  // После рендера — инициализируем галерею (очищает старые интервалы)
+  initGallery();
+}
+
+/* --- Обработка изменения input --- */
+function updateValue(e) {
+  givenProfile = e.target.value.trim();
+  fetchProfile();
+}
+
+/* --- Fetch GitHub профиля --- */
+async function fetchProfile() {
+  if (!givenProfile) {
+    profileName = "";
+    profileID = "";
+    profileLink = "";
+    profileRepos = "";
+    renderPage();
+    return;
+  }
+  try {
+    const response = await fetch(`https://api.github.com/users/${givenProfile}`);
+    const rateLimitRemaining = response.headers.get("X-RateLimit-Remaining");
+
+    if (!response.ok) {
+      profileName = "User not found";
+      profileID = "-";
+      profileLink = "";
+      profileRepos = "-";
+    } else {
+      const data = await response.json();
+      profileName = data.login || "-";
+      profileID = data.id || "-";
+      profileLink = data.html_url || "-";
+      profileRepos = data.public_repos || "-";
     }
-};
 
-// Переключение языка
-function setLang(lang) {
-    document.getElementById("nav-home").textContent = translations[lang].navHome;
-    document.getElementById("nav-services").textContent = translations[lang].navServices;
-    document.getElementById("nav-about").textContent = translations[lang].navAbout;
-    document.getElementById("nav-contacts").textContent = translations[lang].navContacts;
-    document.getElementById("welcome-title").textContent = translations[lang].welcomeTitle;
-    document.getElementById("welcome-text").textContent = translations[lang].welcomeText;
-    document.getElementById("services-title").textContent = translations[lang].servicesTitle;
-    document.getElementById("about-title").textContent = translations[lang].aboutTitle;
-    document.getElementById("about-text").textContent = translations[lang].aboutText;
-    document.getElementById("contacts-title").textContent = translations[lang].contactsTitle;
-    document.getElementById("email-label").textContent = translations[lang].emailLabel;
-    document.getElementById("phone-label").textContent = translations[lang].phoneLabel;
+    if (rateLimitRemaining === "0") {
+      profileName = "API rate limit reached. Try again later.";
+      profileID = "-";
+      profileLink = "";
+      profileRepos = "-";
+    }
 
-    // Список услуг
-    const servicesList = document.getElementById("services-list");
-    servicesList.innerHTML = "";
-    translations[lang].servicesList.forEach(service => {
-        const li = document.createElement("li");
-        li.textContent = service;
-        servicesList.appendChild(li);
-    });
-
-    // ✅ Список видов ремонта
-    document.getElementById("repair-title").textContent = translations[lang].repairTitle;
-    const repairList = document.getElementById("repair-list");
-    repairList.innerHTML = "";
-    translations[lang].repairList.forEach(type => {
-        const li = document.createElement("li");
-        li.textContent = type;
-        repairList.appendChild(li);
-    });
-
-    document.documentElement.lang = lang;
+    renderPage();
+  } catch (e) {
+    console.error(e);
+    profileName = "Error";
+    profileID = "-";
+    profileLink = "";
+    profileRepos = "-";
+    renderPage();
+  }
 }
 
-// Переключение секций
-function showSection(sectionId) {
-    document.querySelectorAll("section").forEach(sec => {
-        sec.style.display = "none";
+/* --- Инициализация галереи: ставим интервалы для каждой колонки.
+       При каждом вызове очищаем предыдущие интервалы, чтобы не было "утечек". --- */
+function initGallery() {
+  // очистка предыдущих интервалов
+  if (galleryIntervals.length) {
+    galleryIntervals.forEach(id => clearInterval(id));
+    galleryIntervals = [];
+  }
+
+  const columns = document.querySelectorAll(".gallery-column");
+  columns.forEach(col => {
+    // начальные параметры
+    col.style.transition = "transform 0.8s ease-in-out";
+    col.style.willChange = "transform";
+    let index = 0;
+    const imgs = col.querySelectorAll("img");
+    const speed = col.dataset.speed ? parseInt(col.dataset.speed, 10) : 4000;
+
+    // если нет изображений — ничего не делаем
+    if (!imgs.length) return;
+
+    // функция обновления с учётом фактической высоты изображения
+    const step = () => {
+      // высота одного изображения (берём актуальную высоту первого)
+      const imgHeight = imgs[0].clientHeight || imgs[0].naturalHeight || 600;
+      index = (index + 1) % imgs.length;
+      col.style.transform = `translateY(-${index * imgHeight}px)`;
+    };
+
+    // стартовое положение (убедимся, что transform = 0)
+    col.style.transform = `translateY(0px)`;
+
+    // если картинка ещё не загружена, дождёмся, чтобы высота была корректной
+    if (!imgs[0].complete) {
+      imgs[0].addEventListener("load", () => {
+        // подстраиваем (обнуляем), на случай если высота изменилась
+        col.style.transform = `translateY(0px)`;
+      }, { once: true });
+    }
+
+    // создаём интервал и сохраняем ID
+    const id = setInterval(step, speed);
+    galleryIntervals.push(id);
+
+    // опционально: при наведении стопим автопрокрутку на этой колонке
+    col.addEventListener("mouseenter", () => {
+      clearInterval(id);
     });
-    document.getElementById(sectionId).style.display = "block";
+    col.addEventListener("mouseleave", () => {
+      // при уходе — создаём новый интервал и обновляем ID в массиве
+      const newId = setInterval(step, speed);
+      // заменим старый (удалённый) id в массиве на newId
+      const pos = galleryIntervals.indexOf(id);
+      if (pos !== -1) galleryIntervals[pos] = newId;
+      else galleryIntervals.push(newId);
+    });
+  });
 }
 
-// По умолчанию
-setLang("ru");
-showSection("home");
+/* --- Инициализация начального рендера --- */
+renderPage();
